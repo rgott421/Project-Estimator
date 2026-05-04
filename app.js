@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
   addExtraPartRow({desc:'', category:'Valve', qty:1, unitCost:0});
   document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', calculate));
   calculate();
-});
+
 async function saveToSharePoint() {
   const data = getAppData();
 
