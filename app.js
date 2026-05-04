@@ -288,7 +288,9 @@ async function saveToSharePoint() {
   try {
     const data = getAppData();
 
-    const fileName = `Quote-${data.customer || 'Unknown'}-${Date.now()}.json`;
+    const nameInput = prompt("Enter Quote Name (Customer / Job):");
+
+const fileName = `Quote-${nameInput || data.customer || 'Unknown'}-${Date.now()}.json`;
 
     await fetch("https://defaultfd6501db952940d2bfb6372e714180.92.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/53b871a031904d778e5afc598438bfa2/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=rJ79JZvpgqiFIvIbkvDdqiOvN-7mbF4XiTVaNKXjfzI", {
       method: "POST",
