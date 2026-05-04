@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sanitary Tubing Welding Estimator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Sanitary Tubing Welding Estimator</h1>
+      <p>Multi-size tubing, size-based fittings, tri-clamps, gaskets, extra parts, labor, travel, PM, and markup estimator.</p>
+    </div>
+    <button onclick="window.print()">Print Quote</button>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Job Information</h2>
+      <div class="grid">
+        <label>Customer <input id="customer" type="text" placeholder="Customer name"></label>
+        <label>Job Name <input id="jobName" type="text" placeholder="Project / location"></label>
+        <label>Estimator <input id="estimator" type="text" placeholder="Estimator name"></label>
+        <label>Date <input id="quoteDate" type="date"></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <div>
+          <h2>Tubing Sizes, Fittings, Tri-Clamps, Gaskets & Welds</h2>
+          <p>Use one row per tubing size. Each size can have its own quantities, pricing, weld time, and material total.</p>
+        </div>
+        <button type="button" onclick="addTubeRow()">+ Add Size</button>
+      </div>
+
+      <div class="table-wrap">
+        <table id="tubeTable">
+          <thead>
+            <tr>
+              <th>Size</th>
+              <th>Run Ft</th>
+              <th>Stick Ft</th>
+              <th>Elbows</th>
+              <th>Tees</th>
+              <th>Ferrules</th>
+              <th>Hangers</th>
+              <th>Tri-Clamps</th>
+              <th>Gaskets</th>
+              <th>Weld Min</th>
+              <th>Tube $/Ft</th>
+              <th>Elbow $</th>
+              <th>Tee $</th>
+              <th>Ferrule $</th>
+              <th>Hanger $</th>
+              <th>Tri-Clamp $</th>
+              <th>Gasket $</th>
+              <th>Tube Cost</th>
+              <th>Fittings Cost</th>
+              <th>Clamp/Gasket Cost</th>
+              <th>Row Material</th>
+              <th>Welds</th>
+              <th>Weld Hrs</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tubeBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <div>
+          <h2>Extra Parts / Equipment</h2>
+          <p>Add pumps, valves, instruments, supports, rental items, or any miscellaneous parts.</p>
+        </div>
+        <button type="button" onclick="addExtraPartRow()">+ Add Part</button>
+      </div>
+      <div class="table-wrap small-table">
+        <table id="extraPartsTable">
+          <thead>
+            <tr>
+              <th>Part / Description</th>
+              <th>Category</th>
+              <th>Qty</th>
+              <th>Unit Cost</th>
+              <th>Total Cost</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="extraPartsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Material Markup / Waste</h2>
+      <div class="grid">
+        <label>Waste Factor % <input id="wastePct" type="number" min="0" step="0.1" value="5"></label>
+        <label>Material Markup % <input id="materialMarkup" type="number" min="0" step="0.1" value="15"></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Field Labor by Role</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Role</th><th># People</th><th>Days</th><th>Hours/Day</th><th>Hourly Rate</th><th>OT Hrs/Day</th><th>OT Rate</th><th>Sat Days</th><th>Sat Rate</th><th>Sun Days</th><th>Sun Rate</th><th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="laborBody"></tbody>
+        </table>
+      </div>
+      <div class="grid compact">
+        <label>Labor Markup % <input id="laborMarkup" type="number" min="0" step="0.1" value="25"></label>
+        <label>Sundries Cost Per Field Labor Hour <input id="sundriesRate" type="number" min="0" step="0.01" value="0"></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Travel Time & Travel Costs</h2>
+      <div class="grid">
+        <label>Travel Hours/Day Per Person <input id="travelHoursDay" type="number" min="0" step="0.25" value="0"></label>
+        <label>Travel Days <input id="travelDays" type="number" min="0" step="0.5" value="0"></label>
+        <label>Travel Hourly Rate <input id="travelRate" type="number" min="0" step="0.01" value="0"></label>
+        <label>Travel OT Hours/Day Per Person <input id="travelOtHoursDay" type="number" min="0" step="0.25" value="0"></label>
+        <label>Travel OT Rate <input id="travelOtRate" type="number" min="0" step="0.01" value="0"></label>
+        <label>Travel Markup % <input id="travelMarkup" type="number" min="0" step="0.1" value="0"></label>
+        <label>Round Trip Miles/Day <input id="milesDay" type="number" min="0" step="1" value="0"></label>
+        <label>Mileage Rate <input id="mileageRate" type="number" min="0" step="0.01" value="0.67"></label>
+        <label>Overnights <input id="overnights" type="number" min="0" step="1" value="0"></label>
+        <label>Room Cost/Night <input id="roomCost" type="number" min="0" step="0.01" value="0"></label>
+        <label>Meal Allowance/Person/Day <input id="mealRate" type="number" min="0" step="0.01" value="0"></label>
+        <label>Meal Days <input id="mealDays" type="number" min="0" step="0.5" value="0"></label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Project Manager</h2>
+      <div class="grid">
+        <label>PM Days <input id="pmDays" type="number" min="0" step="0.5" value="0"></label>
+        <label>PM Hours/Day <input id="pmHoursDay" type="number" min="0" step="0.25" value="0"></label>
+        <label>PM Hourly Rate <input id="pmRate" type="number" min="0" step="0.01" value="0"></label>
+        <label>PM Travel Miles <input id="pmMiles" type="number" min="0" step="1" value="0"></label>
+        <label>PM Mileage Rate <input id="pmMileageRate" type="number" min="0" step="0.01" value="0.67"></label>
+        <label>PM Overnights <input id="pmOvernights" type="number" min="0" step="1" value="0"></label>
+        <label>PM Room Cost/Night <input id="pmRoomCost" type="number" min="0" step="0.01" value="0"></label>
+        <label>PM Meal Allowance/Day <input id="pmMealRate" type="number" min="0" step="0.01" value="0"></label>
+      </div>
+    </section>
+
+    <section class="card summary">
+      <h2>Estimate Summary</h2>
+      <div class="summary-grid">
+        <div><span>Total Weld Count</span><strong id="sumWelds">0</strong></div>
+        <div><span>Total Weld Hours</span><strong id="sumWeldHours">0.00</strong></div>
+        <div><span>Tube Material</span><strong id="sumTubeMaterial">$0.00</strong></div>
+        <div><span>Fittings Material</span><strong id="sumFittingMaterial">$0.00</strong></div>
+        <div><span>Tri-Clamps / Gaskets</span><strong id="sumClampGasketMaterial">$0.00</strong></div>
+        <div><span>Extra Parts</span><strong id="sumExtraParts">$0.00</strong></div>
+        <div><span>Material Cost w/ Waste</span><strong id="sumMaterialCost">$0.00</strong></div>
+        <div><span>Material Sell</span><strong id="sumMaterialSell">$0.00</strong></div>
+        <div><span>Field Labor Cost</span><strong id="sumLaborCost">$0.00</strong></div>
+        <div><span>Field Labor Sell</span><strong id="sumLaborSell">$0.00</strong></div>
+        <div><span>Sundries</span><strong id="sumSundries">$0.00</strong></div>
+        <div><span>Travel Time Sell</span><strong id="sumTravelSell">$0.00</strong></div>
+        <div><span>Mileage / Rooms / Meals</span><strong id="sumExpenses">$0.00</strong></div>
+        <div><span>Project Manager</span><strong id="sumPM">$0.00</strong></div>
+        <div><span>Total Cost</span><strong id="sumCost">$0.00</strong></div>
+        <div><span>Gross Profit</span><strong id="sumProfit">$0.00</strong></div>
+        <div><span>Gross Margin</span><strong id="sumMargin">0.00%</strong></div>
+        <div class="grand"><span>Final Sell Price</span><strong id="sumFinal">$0.00</strong></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

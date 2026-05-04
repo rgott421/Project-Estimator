@@ -1,0 +1,41 @@
+:root{
+  --bg:#f5f7fa; --card:#fff; --ink:#1f2937; --muted:#667085; --line:#d0d5dd; --accent:#1f6feb;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+header{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:24px 28px;background:#101828;color:white}
+header h1{margin:0 0 6px;font-size:26px}
+header p{margin:0;color:#d0d5dd}
+button{border:0;background:var(--accent);color:white;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+button.remove{background:#b42318;padding:6px 10px}
+main{max-width:1700px;margin:24px auto;padding:0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:0 3px 12px rgba(16,24,40,.06)}
+h2{margin:0 0 12px;font-size:20px}
+.section-title{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.section-title p{margin:4px 0 0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:12px}
+.grid.compact{grid-template-columns:repeat(2,minmax(220px,1fr));margin-top:14px}
+label{font-size:13px;color:#344054;font-weight:700}
+input,select{width:100%;margin-top:5px;padding:9px;border:1px solid var(--line);border-radius:9px;font-size:14px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:1650px}
+.small-table table{min-width:850px}
+th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;font-size:13px;white-space:nowrap}
+th{background:#f2f4f7;color:#344054}
+td input,td select{min-width:80px;margin:0;padding:7px}
+td .wide-input{min-width:260px}
+td.total,td.calc{font-weight:700;background:#fcfcfd}
+.summary-grid{display:grid;grid-template-columns:repeat(4,minmax(180px,1fr));gap:12px}
+.summary-grid div{background:#f9fafb;border:1px solid var(--line);border-radius:12px;padding:13px}
+.summary-grid span{display:block;color:var(--muted);font-size:13px;margin-bottom:5px}
+.summary-grid strong{font-size:20px}
+.summary-grid .grand{background:#eaf2ff;border-color:#84caff}
+.summary-grid .grand strong{font-size:24px}
+@media(max-width:900px){.grid,.summary-grid{grid-template-columns:1fr 1fr}header{align-items:flex-start;flex-direction:column}}
+@media(max-width:600px){.grid,.summary-grid{grid-template-columns:1fr}}
+@media print{
+  body{background:white}
+  header button,.remove,.section-title button{display:none}
+  .card{box-shadow:none;break-inside:avoid}
+  input,select{border:0;padding:0}
+}
