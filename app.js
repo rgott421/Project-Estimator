@@ -247,4 +247,28 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', calculate));
   calculate();
 });
+async function saveToSharePoint() {
+  try {
+    const data = {
+      customer: document.getElementById('customer').value,
+      jobName: document.getElementById('jobName').value
+    };
 
+    const fileName = `Quote-${data.customer || 'Unknown'}-${Date.now()}.json`;
+
+    await fetch("https://defaultfd6501db952940d2bfb6372e714180.92.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/53b871a031904d778e5afc598438bfa2/triggers/manual/paths/invoke?api-version=1", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        fileName: fileName,
+        content: JSON.stringify(data)
+      })
+    });
+
+    alert("Saved to SharePoint");
+  } catch (e) {
+    alert("Error saving: " + e.message);
+  }
+}
