@@ -291,7 +291,7 @@ async function saveToSharePoint() {
     const safeJob = (data.jobName || 'Job').replace(/[^a-z0-9-_ ]/gi, '').trim() || 'Job';
     const fileName = `Quote-${safeCustomer}-${safeJob}-${Date.now()}.json`;
 
-    const response = await fetch("PASTE-YOUR-POWER-AUTOMATE-URL-HERE", {
+    const response = await fetch("https://defaultfd6501db952940d2bfb6372e714180.92.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/53b871a031904d778e5afc598438bfa2/triggers/manual/paths/invoke?api-version=1", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
