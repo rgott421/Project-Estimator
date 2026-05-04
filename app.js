@@ -263,5 +263,4 @@ async function saveToSharePoint() {
     })
   });
 
-  alert("Saved to SharePoint");
-}
+
