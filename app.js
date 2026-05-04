@@ -247,28 +247,65 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', calculate));
   calculate();
 });
+
+
+function getAppData() {
+  return {
+    customer: document.getElementById('customer')?.value || '',
+    jobName: document.getElementById('jobName')?.value || '',
+    estimator: document.getElementById('estimator')?.value || '',
+    quoteDate: document.getElementById('quoteDate')?.value || '',
+    tubeRows: [...document.querySelectorAll('#tubeBody tr')].map(tr => ({
+      size: tr.querySelector('.tube-size')?.value || '',
+      runFt: tr.querySelector('.run-ft')?.value || 0,
+      stickFt: tr.querySelector('.stick-ft')?.value || 20,
+      elbows: tr.querySelector('.elbows')?.value || 0,
+      tees: tr.querySelector('.tees')?.value || 0,
+      ferrules: tr.querySelector('.ferrules')?.value || 0,
+      hangers: tr.querySelector('.hangers')?.value || 0,
+      triClamps: tr.querySelector('.tri-clamps')?.value || 0,
+      gaskets: tr.querySelector('.gaskets')?.value || 0,
+      weldMin: tr.querySelector('.weld-min')?.value || 0,
+      tubeCost: tr.querySelector('.tube-cost')?.value || 0,
+      elbowCost: tr.querySelector('.elbow-cost')?.value || 0,
+      teeCost: tr.querySelector('.tee-cost')?.value || 0,
+      ferruleCost: tr.querySelector('.ferrule-cost')?.value || 0,
+      hangerCost: tr.querySelector('.hanger-cost')?.value || 0,
+      triClampCost: tr.querySelector('.tri-clamp-cost')?.value || 0,
+      gasketCost: tr.querySelector('.gasket-cost')?.value || 0
+    })),
+    extraParts: [...document.querySelectorAll('#extraPartsBody tr')].map(tr => ({
+      desc: tr.querySelector('.part-desc')?.value || '',
+      category: tr.querySelector('.part-category')?.value || '',
+      qty: tr.querySelector('.part-qty')?.value || 0,
+      unitCost: tr.querySelector('.part-unit-cost')?.value || 0
+    })),
+    savedAt: new Date().toISOString()
+  };
+}
+
 async function saveToSharePoint() {
   try {
-    const data = {
-      customer: document.getElementById('customer').value,
-      jobName: document.getElementById('jobName').value
-    };
+    const data = getAppData();
+    const safeCustomer = (data.customer || 'Unknown').replace(/[^a-z0-9-_ ]/gi, '').trim() || 'Unknown';
+    const safeJob = (data.jobName || 'Job').replace(/[^a-z0-9-_ ]/gi, '').trim() || 'Job';
+    const fileName = `Quote-${safeCustomer}-${safeJob}-${Date.now()}.json`;
 
-    const fileName = `Quote-${data.customer || 'Unknown'}-${Date.now()}.json`;
-
-    await fetch("https://defaultfd6501db952940d2bfb6372e714180.92.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/53b871a031904d778e5afc598438bfa2/triggers/manual/paths/invoke?api-version=1", {
+    const response = await fetch("PASTE-YOUR-POWER-AUTOMATE-URL-HERE", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         fileName: fileName,
-        content: JSON.stringify(data)
+        content: JSON.stringify(data, null, 2)
       })
     });
 
+    if (!response.ok) {
+      throw new Error(`Power Automate returned ${response.status}`);
+    }
+
     alert("Saved to SharePoint");
   } catch (e) {
-    alert("Error saving: " + e.message);
+    alert("Error saving to SharePoint: " + e.message);
   }
 }
