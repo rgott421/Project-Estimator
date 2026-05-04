@@ -287,25 +287,19 @@ function getAppData() {
 async function saveToSharePoint() {
   try {
     const data = getAppData();
-    const safeCustomer = (data.customer || 'Unknown').replace(/[^a-z0-9-_ ]/gi, '').trim() || 'Unknown';
-    const safeJob = (data.jobName || 'Job').replace(/[^a-z0-9-_ ]/gi, '').trim() || 'Job';
-    const fileName = `Quote-${safeCustomer}-${safeJob}-${Date.now()}.json`;
 
-    const response = await fetch("https://defaultfd6501db952940d2bfb6372e714180.92.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/53b871a031904d778e5afc598438bfa2/triggers/manual/paths/invoke?api-version=1", {
+    const fileName = `Quote-${data.customer || 'Unknown'}-${Date.now()}.json`;
+
+    await fetch("https://defaultfd6501db952940d2bfb6372e714180.92.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/53b871a031904d778e5afc598438bfa2/triggers/manual/paths/invoke?api-version=1", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         fileName: fileName,
-        content: JSON.stringify(data, null, 2)
+        content: JSON.stringify(data)
       })
     });
 
-    if (!response.ok) {
-      throw new Error(`Power Automate returned ${response.status}`);
-    }
-
     alert("Saved to SharePoint");
-  } catch (e) {
-    alert("Error saving to SharePoint: " + e.message);
+  } catch (err) {
+    alert("Error saving to SharePoint: " + err.message);
   }
 }
